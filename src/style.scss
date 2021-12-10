@@ -15,5 +15,29 @@ body {
 main {
     min-height: 100vh;
     min-width: 100vw;
+    padding: 12px;
     background: repeating-linear-gradient(to top, rgba(240, 0, 0, 0.4), rgba(0,240,0,0.4) 78.15%, rgba(0, 0, 240, 0.4));
+}
+
+.weatherAppTop {
+    display: flex;
+    justify-content: space-between;
+    color: white;
+}
+
+.weatherDescription {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.weatherData {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    >div {
+        display: flex;
+        gap: 12px;
+    }
 }

@@ -1,28 +1,28 @@
 import "./style.scss";
 
-import { format, toDate } from "date-fns";
 import htmlBuild from "./htmlBuild";
-
+import { getWeatherIcon } from "./icons";
 import backgroundImg from "./background.jpg";
-import { offsetDateTime } from "./tools";
 
 // const backgroundImageColor = "rgba(0,0,0,0.4)";
 const main = document.createElement("main");
 document.body.appendChild(main);
 
 // create Weather HTML
-main.appendChild(htmlBuild.createWeatherDescription());
+main.appendChild(htmlBuild.createTopWeatherApp());
 
 // caching DOM
 const weatherDescription = document.querySelector(".weatherDescription");
+const weatherData = document.querySelector(".weatherData");
 const currentWeather = weatherDescription.querySelector(".weatherType");
 const currentCity = weatherDescription.querySelector(".city");
-const currentDate = weatherDescription.querySelector(".currentDate");
-const currentTime = weatherDescription.querySelector(".currentTime");
 const currentTemp = weatherDescription.querySelector(".currentTemp");
 const currentWeatherIcon = weatherDescription.querySelector(".weatherIcon");
 const citySearch = weatherDescription.querySelector(".citySearch");
 const search = weatherDescription.querySelector(".search");
+const feelsLike = weatherData.querySelector(".feelsLikeDataNumber");
+const humidity = weatherData.querySelector(".humidityDataNumber");
+const windSpeed = weatherData.querySelector(".windSpeedDataNumber");
 
 // document.body.style.backgroundImage = `repeating-linear-gradient(to top, rgba(0, 0, 0, 0.4), ${backgroundImageColor} 78.15%, rgba(0, 0, 0, 0.4)), url("${backgroundImg}")`;
 document.body.style.backgroundImage = `url("${backgroundImg}")`;
@@ -44,24 +44,26 @@ async function getCurrentWeather(city) {
   return data;
 }
 
-function parseWeatherTime(dt, offset) {
-  const date = toDate(dt * 1000);
-  const result = format(date, "PPpp");
-  return result;
+function changeWeatherIcon(icon) {
+  currentWeatherIcon.src = getWeatherIcon(icon);
 }
 
 async function processWeatherData(city) {
   const data = await getCurrentWeather(city);
   currentWeather.textContent = data.weather.description;
   currentCity.textContent = data.name;
-  currentTime.textContent = parseWeatherTime(data.dt, data.timezone);
-  currentTemp.textContent = `${data.main.temp}°F`;
+  currentTemp.textContent = `${data.main.temp} °F`;
+  feelsLike.textContent = `${data.main.feels_like} °F`;
+  humidity.textContent = `${data.main.humidity} %`;
+  windSpeed.textContent = `${data.wind.speed}`;
+  changeWeatherIcon(data.weather[0].icon)
 }
 
 processWeatherData("New York");
 
 async function getWeatherForLocation() {
-  console.log(citySearch.value);
+  const searchValue = citySearch.value;
+  processWeatherData(searchValue);
 }
 
 function checkForEnter(e) {
