@@ -22,10 +22,10 @@ export default (function WeatherAppHtml() {
     container.appendChild(icon);
     const right = document.createElement("div");
     right.appendChild(
-      createDomElement("div", `${userClass.split(" "[0])}Title`, title)
+      createDomElement("div", `${userClass.split(" "[0])}Title dataTitle`, title)
     );
     right.appendChild(
-      createDomElement("div", `${userClass.split(" "[0])}Number`, number)
+      createDomElement("div", `${userClass.split(" "[0])}Number dataNumber`, number)
     );
     container.appendChild(right);
     return container;
@@ -36,19 +36,19 @@ export default (function WeatherAppHtml() {
     const humidity = createDataWithIcon(
       "rain",
       "Humidity",
-      "XX",
+      "",
       "humidityData"
     );
     const windSpeed = createDataWithIcon(
       "wind",
       "Wind Speed",
-      "XX",
+      "",
       "windSpeedData"
     );
     const feelsLike = createDataWithIcon(
       "thermometer",
       "Feels Like",
-      "XX",
+      "",
       "feelsLikeData"
     );
     container.appendChild(feelsLike);
@@ -60,12 +60,12 @@ export default (function WeatherAppHtml() {
   function createWeatherDescription() {
     const container = createDomElement("div", "weatherDescription");
     container.appendChild(
-      createDomElement("div", "weatherType", "Weather Type Placeholder")
+      createDomElement("div", "weatherType")
     );
-    container.appendChild(createDomElement("div", "city", "city placeholder"));
+    container.appendChild(createDomElement("div", "city"));
     // container.appendChild(createDomElement("div", "currentDate", "date placeholder"));
     // container.appendChild(createDomElement("div", "currentTime", "timePlaceholder"))
-    container.appendChild(createDomElement("div", "currentTemp", "X deg"));
+    container.appendChild(createDomElement("div", "currentTemp"));
     container.appendChild(
       createDomElement("img", "weatherIcon")
     );

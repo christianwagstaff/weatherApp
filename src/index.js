@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 import "./style.scss";
 
 import htmlBuild from "./htmlBuild";
@@ -40,7 +41,6 @@ async function getCurrentWeather(city) {
     { mode: "cors" }
   );
   const data = await response.json();
-  console.log(data);
   return data;
 }
 
@@ -48,21 +48,31 @@ function changeWeatherIcon(icon) {
   currentWeatherIcon.src = getWeatherIcon(icon);
 }
 
+function formatWeatherType(text) {
+  return text.replace(/(^\w|\s\w)/g, (m) => m.toUpperCase());
+}
+
 async function processWeatherData(city) {
-  const data = await getCurrentWeather(city);
-  currentWeather.textContent = data.weather.description;
-  currentCity.textContent = data.name;
-  currentTemp.textContent = `${data.main.temp} °F`;
-  feelsLike.textContent = `${data.main.feels_like} °F`;
-  humidity.textContent = `${data.main.humidity} %`;
-  windSpeed.textContent = `${data.wind.speed}`;
-  changeWeatherIcon(data.weather[0].icon)
+  try {
+    const data = await getCurrentWeather(city);
+    currentWeather.textContent = formatWeatherType(data.weather[0].description);
+    currentCity.textContent = data.name;
+    currentTemp.textContent = `${data.main.temp} °F`;
+    feelsLike.textContent = `${data.main.feels_like} °F`;
+    humidity.textContent = `${data.main.humidity} %`;
+    windSpeed.textContent = `${data.wind.speed} mph`;
+    changeWeatherIcon(data.weather[0].icon);
+  } catch (error) {
+    console.log(error);
+    alert(`${city} Not Found! Try another search`)
+  }
 }
 
 processWeatherData("New York");
 
 async function getWeatherForLocation() {
   const searchValue = citySearch.value;
+  citySearch.value = "";
   processWeatherData(searchValue);
 }
 
